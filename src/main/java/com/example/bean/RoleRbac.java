@@ -1,11 +1,29 @@
 package com.example.bean;
 
-public class RoleRbac {
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "role_rbac")
+public class RoleRbac implements Serializable{
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rrId;
 
-    private Integer roleId;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            targetEntity =Role.class,
+            mappedBy = "roleId"
+    )
+    private List<Role> role=new ArrayList<>();
 
-    private Integer moduleId;
+    @OneToOne(cascade = CascadeType.ALL) //级联操作
+    @JoinColumn(name = "moduleId",referencedColumnName = "moduleId")
+    private Module module;
 
     public Integer getRrId() {
         return rrId;
@@ -15,19 +33,34 @@ public class RoleRbac {
         this.rrId = rrId;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public List<Role> getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(List<Role> role) {
+        this.role = role;
     }
 
-    public Integer getModuleId() {
-        return moduleId;
+    public Module getModule() {
+        return module;
     }
 
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
+    public void setModule(Module module) {
+        this.module = module;
+    }
+
+
+    public RoleRbac(Integer rrId,List<Role> role, Module module) {
+        this.rrId=rrId;
+        this.role = role;
+        this.module = module;
+    }
+
+    public RoleRbac(List<Role> role, Module module) {
+        this.role = role;
+        this.module = module;
+    }
+
+    public RoleRbac() {
     }
 }

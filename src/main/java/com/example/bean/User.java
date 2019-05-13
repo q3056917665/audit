@@ -1,6 +1,14 @@
 package com.example.bean;
 
-public class User {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
+@Table(name = "user")
+@Entity
+public class User implements Serializable {
+    @Id
     private String userCode;
 
     private String userName;
@@ -79,5 +87,29 @@ public class User {
 
     public void setNatural(String natural) {
         this.natural = natural == null ? null : natural.trim();
+    }
+
+    public User(String userCode, String userName, String userPassword, String userEmail, String userPhone, String address, Integer jobId, String natural) {
+        this.userCode = userCode;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
+        this.address = address;
+        this.jobId = jobId;
+        this.natural = natural;
+    }
+
+    public User(String userName, String userPassword, String userEmail, String userPhone, String address, Integer jobId, String natural) {
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
+        this.address = address;
+        this.jobId = jobId;
+        this.natural = natural;
+    }
+
+    public User() {
     }
 }
