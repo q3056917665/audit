@@ -18,6 +18,7 @@ public class AuditController {
 
     @RequestMapping("/auditeeHtml")
     public String tiao(Model model, @RequestParam(value = "parentCode",required = false)String parentCode){
+        System.out.println(parentCode+"123123");
         List<Auditingbody> all = auditingbodyService.findAllByParentCode("0"); //查询一级菜单
         List<Auditingbody> allByParentCode = auditingbodyService.findAllByParentCode(parentCode); //查询二级菜单
         model.addAttribute("all",all);
