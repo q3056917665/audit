@@ -2,6 +2,7 @@ package com.example.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "auditingbody")
@@ -12,6 +13,7 @@ public class Auditingbody implements Serializable {
     private String parentCode;
 
     private String abName;
+
 
     public Auditingbody() {
     }
