@@ -6,6 +6,7 @@
     <link th:href="@{/css/all.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/js/bstable/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/js/bstable/css/bootstrap-table.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/themes/default/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/themes/icon.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/demo/demo.css}">
@@ -69,16 +70,9 @@
         </button>
     </div>
     <div class="easyui-panel" style="padding:5px">
-        <ul class="easyui-tree">
-            <li th:each="auditOne:${all}">
-                <span th:text="${auditOne.abName}" th:href="@{/auditeeHtml(parentCode=${auditOne.abCode})}"></span>
-                <ul>
-                    <li>index.html</li>
-                    <li>about.html</li>
-                    <li>welcome.html</li>
-                </ul>
-            </li>
-        </ul>
+       <ul th:each="audtiOne:${all}">
+           <li><i class="fa fa-folder" style="color: orange"></i>&nbsp;<a th:href="@{/auditeeHtml(parentCode=${audtiOne.abCode})}" th:text="${audtiOne.abName}"></a></li>
+       </ul>
     </div>
 </div>
 <div id="main">
