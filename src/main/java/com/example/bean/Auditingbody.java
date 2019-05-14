@@ -9,41 +9,39 @@ public class Auditingbody implements Serializable {
     @Id
     private String abCode;
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Auditingbody.class)
-    @JoinColumn(name = "parentCode", referencedColumnName = "abCode")
-    private Auditingbody auditingbody;
+    private String parentCode;
 
     private String abName;
+
+    public Auditingbody() {
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
 
     @Override
     public String toString() {
         return "Auditingbody{" +
                 "abCode='" + abCode + '\'' +
-                ", auditingbody=" + auditingbody +
+                ", parentCode='" + parentCode + '\'' +
                 ", abName='" + abName + '\'' +
                 '}';
     }
 
-    public Auditingbody() {
-    }
-
-    public Auditingbody(Auditingbody auditingbody, String abName) {
-        this.auditingbody = auditingbody;
+    public Auditingbody(String parentCode, String abName) {
+        this.parentCode = parentCode;
         this.abName = abName;
     }
 
-    public Auditingbody(String abCode, Auditingbody auditingbody, String abName) {
+    public Auditingbody(String abCode, String parentCode, String abName) {
         this.abCode = abCode;
-        this.auditingbody = auditingbody;
+        this.parentCode = parentCode;
         this.abName = abName;
     }
 
-    public Auditingbody getAuditingbody() {
-        return auditingbody;
-    }
-
-    public void setAuditingbody(Auditingbody auditingbody) {
-        this.auditingbody = auditingbody;
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
     }
 
     public String getAbCode() {
