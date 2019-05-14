@@ -20,6 +20,6 @@ public class UserController {
     @ResponseBody
     public String login(String userCode,String userPassword){
         System.out.println(userCode+userPassword);
-        return "";
+        return "登录成功";
     }
 }

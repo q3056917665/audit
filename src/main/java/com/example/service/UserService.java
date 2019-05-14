@@ -1,4 +1,8 @@
 package com.example.service;
 
-public class UserService {
+import com.example.bean.User;
+
+public interface UserService {
+
+    User login(String userCode,String userPwd);
 }
