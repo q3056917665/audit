@@ -1,17 +1,26 @@
+
 package com.example.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * 被审计机构开展的业务
+ */
 @Entity
 @Table(name = "aibusiness")
 public class Aibusiness implements Serializable {
+    /**
+     * 编号
+     */
     @Id
     private String aibCode;
     @ManyToOne(fetch = FetchType.LAZY,targetEntity = Auditedinstitutions.class)
     @JoinColumn(name = "aiCode",referencedColumnName = "aiCode")
     private Auditedinstitutions auditedinstitutions;
-    private String businessCode;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = PsSystemconfig.class)
+    @JoinColumn(name = "businessCode",referencedColumnName ="psId")
+    private PsSystemconfig psSystemconfig;
 
     public Auditedinstitutions getAuditedinstitutions() {
         return auditedinstitutions;
@@ -21,9 +30,31 @@ public class Aibusiness implements Serializable {
         this.auditedinstitutions = auditedinstitutions;
     }
 
-    public Aibusiness(Auditedinstitutions auditedinstitutions, String businessCode) {
+    public String getAibCode() {
+        return aibCode;
+    }
+
+    public void setAibCode(String aibCode) {
+        this.aibCode = aibCode == null ? null : aibCode.trim();
+    }
+
+    public PsSystemconfig getPsSystemconfig() {
+        return psSystemconfig;
+    }
+
+    public void setPsSystemconfig(PsSystemconfig psSystemconfig) {
+        this.psSystemconfig = psSystemconfig;
+    }
+
+    public Aibusiness(String aibCode, Auditedinstitutions auditedinstitutions, PsSystemconfig psSystemconfig) {
+        this.aibCode = aibCode;
         this.auditedinstitutions = auditedinstitutions;
-        this.businessCode = businessCode;
+        this.psSystemconfig = psSystemconfig;
+    }
+
+    public Aibusiness(Auditedinstitutions auditedinstitutions, PsSystemconfig psSystemconfig) {
+        this.auditedinstitutions = auditedinstitutions;
+        this.psSystemconfig = psSystemconfig;
     }
 
     public Aibusiness() {
@@ -34,29 +65,7 @@ public class Aibusiness implements Serializable {
         return "Aibusiness{" +
                 "aibCode='" + aibCode + '\'' +
                 ", auditedinstitutions=" + auditedinstitutions +
-                ", businessCode='" + businessCode + '\'' +
+                ", psSystemconfig=" + psSystemconfig +
                 '}';
-    }
-
-    public String getAibCode() {
-        return aibCode;
-    }
-
-    public Aibusiness(String aibCode, Auditedinstitutions auditedinstitutions, String businessCode) {
-        this.aibCode = aibCode;
-        this.auditedinstitutions = auditedinstitutions;
-        this.businessCode = businessCode;
-    }
-
-    public void setAibCode(String aibCode) {
-        this.aibCode = aibCode == null ? null : aibCode.trim();
-    }
-
-    public String getBusinessCode() {
-        return businessCode;
-    }
-
-    public void setBusinessCode(String businessCode) {
-        this.businessCode = businessCode == null ? null : businessCode.trim();
     }
 }

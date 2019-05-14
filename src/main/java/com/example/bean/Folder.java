@@ -1,15 +1,23 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Folder {
+@Entity
+@Table(name = "folder")
+public class Folder implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer folderId;
 
     private String folderName;
 
     private String folderPath;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
+    private User user;
 
     private Date createDate;
 
@@ -41,12 +49,12 @@ public class Folder {
         this.folderPath = folderPath == null ? null : folderPath.trim();
     }
 
-    public String getUserCode() {
-        return userCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getCreateDate() {
@@ -71,5 +79,40 @@ public class Folder {
 
     public void setIsUsable(Integer isUsable) {
         this.isUsable = isUsable;
+    }
+
+    @Override
+    public String toString() {
+        return "Folder{" +
+                "folderId=" + folderId +
+                ", folderName='" + folderName + '\'' +
+                ", folderPath='" + folderPath + '\'' +
+                ", user=" + user +
+                ", createDate=" + createDate +
+                ", info='" + info + '\'' +
+                ", isUsable=" + isUsable +
+                '}';
+    }
+
+    public Folder(String folderName, String folderPath, User user, Date createDate, String info, Integer isUsable) {
+        this.folderName = folderName;
+        this.folderPath = folderPath;
+        this.user = user;
+        this.createDate = createDate;
+        this.info = info;
+        this.isUsable = isUsable;
+    }
+
+    public Folder(Integer folderId,String folderName, String folderPath, User user, Date createDate, String info, Integer isUsable) {
+        this.folderId=folderId;
+        this.folderName = folderName;
+        this.folderPath = folderPath;
+        this.user = user;
+        this.createDate = createDate;
+        this.info = info;
+        this.isUsable = isUsable;
+    }
+
+    public Folder() {
     }
 }
