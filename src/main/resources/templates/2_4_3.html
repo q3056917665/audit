@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非现场检查结果</title>
+    <link href="css/all.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/date/js/laydate.js"></script>
+    <div style="border:solid 1px #ccc; width: 94%;height: 90%;margin: 0 auto">
+        <div style="padding-left:20px;background: #cccccc ">
+            <span style="font-size:22px">非现场审计
+                <span style="color: red;padding-left:10px; ">(营业部类)</span>
+            </span>
+        </div>
+        <div style="border:solid 1px #ccc; width: 84%;height: 20%;margin:20px auto;">
+            <div id="left" style=" width: 200px;text-align: center;border:solid 1px #ccc;display:inline-block;">
+                <div style="background:#00a0e9;border:solid 1px #ccc;padding: 8px 0 8px 0;">
+                    <span style="font-size: 20px;padding: 5px 0 5px 0;">检查项</span>
+                </div>
+                <div style="border:solid 1px #ccc;padding: 8px 0 8px 0;">
+                    <span style="font-size: 20px">资产前20户</span>
+                </div>
+                <div style="border:solid 1px #ccc;padding: 8px 0 8px 0;">
+                    <span style="font-size: 20px">交易前20户</span>
+                </div>
+                <div>
+                    <div><button class="btn-default btn">检查项总结</button></div>
+                </div>
+            </div>
+            <div id="right" style="display:inline-block;width: 80%">
+                <table data-url="json/data_alae_list.json" id="table" class="table_style" style="margin: 0 auto" ></table>
+            </div>
+        </div>
+        <div style="border:solid 1px #ccc; width: 84%;height: 20%;margin:20px auto;">
+            <div style="padding-left:20px;background: #cccccc ">
+                <span style="font-size:22px">明细稽核
+                    <span style="color: red;padding-left:10px; ">(和检查项总结不同时出现)</span>
+                </span>
+            </div>
+            <div style="margin: 0 auto;width: 70%" >
+                <div>
+                    <label class="find_labela">是否正常</label>
+                    <input type="radio" class="rideo_label"> 未知
+                    <input type="radio" class="rideo_label">1-正常
+                    <input type="radio" class="rideo_label">2-异常
+                </div>
+                <div>
+                    <label class="find_labela">扣分项目:</label>
+                    <textarea style="width: 60%;height:100px;overflow-x: hidden"></textarea>
+                </div>
+                <div>
+                    <label class="find_labela">手工扣分:</label>
+                    <textarea style="width: 60%;height:100px;overflow-x: hidden"></textarea>
+                </div>
+                <div>
+                    <label class="find_labela">备注信息:</label>
+                    <textarea style="width: 60%;height:100px;overflow-x: hidden"></textarea>
+                </div>
+
+                <div>
+                    <label class="find_labela">计算扣分:</label><input class="find_input" type="text">
+                    <label class="find_labela">实际扣分:</label><input class="find_input" type="text">
+                </div>
+
+                <div>
+                    <label class="find_labela">检查用户:</label><input class="find_input" type="text">
+                    <label class="find_labela">检查时间:</label><input class="find_input" type="text">
+                </div>
+                <div style="margin-left: 59%">
+                    <button class="btn-default btn">保存</button> <button class="btn-default btn">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="border:solid 1px #ccc; width: 84%;height: 20%;margin:20px auto;">
+            <div style="padding-left:20px;background: #cccccc ">
+                <span style="font-size:22px">检查项总结
+                    <span style="color: red;padding-left:10px; ">(和明细稽核不同时出现)</span>
+                </span>
+            </div>
+            <div style="margin: 0 auto;width: 70%" >
+                <div>
+                    <label class="find_labela">稽核项目:</label>
+                    <input type="text"  style="width: 500px" class="find_input">
+                </div>
+                <div>
+                    <label class="find_labela">检查项:</label>
+                    <input type="text"  style="width: 500px" class="find_input">
+                </div>
+                <div>
+                    <label class="find_labela">部门名称:</label>
+                    <input type="text"  style="width: 500px" class="find_input">
+                </div>
+                <div>
+                    <label class="find_labela">审核状态:</label>
+                    <input type="radio" class="rideo_label">0-未处理
+                    <input type="radio" class="rideo_label">1-处理中
+                    <input type="radio" class="rideo_label">2-已完成
+                </div>
+
+                <div>
+                    <label class="find_labela">累计:</label>
+                    <input type="text"  style="width: 500px" class="find_input">
+                </div>
+
+                <div>
+                    <label class="find_labela">被稽核:</label>
+                    <input type="text"  style="width: 500px" class="find_input">
+                </div>
+                <div>
+                    <label class="find_labela">审计情况:</label>
+                    <textarea style="width: 60%;height:100px;overflow-x: hidden"></textarea>
+                </div>
+                <div>
+                    <label class="find_labela">备注信息:</label>
+                    <textarea style="width: 60%;height:50px;overflow-x: hidden"></textarea>
+                </div>
+                <div>
+                    <label class="find_labela">计算扣分:</label><input class="find_input" type="text">
+                    <label class="find_labela">实际扣分:</label><input class="find_input" type="text">
+                </div>
+
+                <div>
+                    <label class="find_labela">检查用户:</label><input class="find_input" type="text">
+                    <label class="find_labela">检查时间:</label><input class="find_input" type="text">
+                </div>
+                <div style="margin-left: 59%">
+                    <button class="btn-default btn">保存</button> <button class="btn-default btn">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/download.json",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 3,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams: null,
+            columns: [
+                {
+                    title: '客户信息',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '违反词条',
+                    field: 'date',
+                    align: 'center'
+                },
+                {
+                    title: '计算扣分',
+                    field: 'date',
+                    align: 'center'
+                }
+            ]
+        });
+    })
+
+</script>
+</body>
+</html>

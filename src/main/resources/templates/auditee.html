@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/all.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/demo/demo.css">
+    <script type="text/javascript" src="jquery-easyui-1.7.0/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <style>
+        *{margin: 0;padding: 0;}
+        #left{
+            width: 24%;
+            height: 100%;
+            float: left;
+            border: 1px solid lightgray;
+        }
+        #main{
+            width: 75%;
+            margin-left: 10px;
+            height: 100%;
+            float: left;
+        }
+        #top{
+            width: 100%;
+            height: 48%;
+            border: 1px solid lightgray;
+        }
+        #buttom{
+            width: 100%;
+            height: 52%;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<body style="height: 936px;margin-top: -18px;">
+<div id="left">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                被审计机构
+            </h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horizontal" role="form">
+                <label for="type" class="control-label" style="display: inline-block;">业务类型:</label>
+                <select class="form-control" style="width: 250px;display: inline-block;margin-left: 60px;" id="type">
+                    <option>123</option>
+                    <option>123</option>
+                    <option>123</option>
+                </select>
+            </form>
+        </div>
+    </div>
+    <div id="toolbar1" class="btn-group">
+        <button id="btn_add1" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="btn_edit1" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button id="btn_delete1" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+    </div>
+    <div class="easyui-panel" style="padding:5px">
+        <ul class="easyui-tree">
+            <li>
+                <span>My Documents</span>
+                <ul>
+                    <li data-options="state:'closed'">
+                        <span>Photos</span>
+                        <ul>
+                            <li>
+                                <span>Friend</span>
+                            </li>
+                            <li>
+                                <span>Wife</span>
+                            </li>
+                            <li>
+                                <span>Company</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span>Program Files</span>
+                        <ul>
+                            <li>Intel</li>
+                            <li>Java</li>
+                            <li>Microsoft Office</li>
+                            <li>Games</li>
+                        </ul>
+                    </li>
+                    <li>index.html</li>
+                    <li>about.html</li>
+                    <li>welcome.html</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="main">
+    <div id="top">
+        <p>
+        <table data-url="json/data_alae_list.json" id="table1" class="table_style" style="margin: 0 auto" >
+        </table>
+        </p>
+    </div>
+    <div id="buttom">
+        <div id="toolbar2" class="btn-group">
+            <button id="btn_add2" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+            <button id="btn_edit2" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+            </button>
+            <button id="btn_delete2" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+            </button>
+        </div>
+        <p>
+        <table data-url="json/data_alae_list.json" id="table2" class="table_style" style="margin: 0 auto" >
+        </table>
+        </p>
+    </div>
+</div>
+
+
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/date/js/laydate.js"></script>
+<script>
+    !function(){
+        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
+        laydate({elem: '#demo'});
+        laydate({elem: '#demo1'});//绑定元素
+    }();
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#table1').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/allFind.json",
+            dataType: "json",
+            toolbar: '#toolbar',
+            pageList: [1,2,5,10],
+            pagination: true, //分页
+            pageSize: 9,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            strictSearch: true,
+            contentType: "application/x-www-form-urlencoded",
+            showRefresh: false,
+            queryParams: null,
+            columns: [
+                {
+                    checkbox: "true",
+                    field: 'check',
+                    align: 'center',
+                    valign: 'middle'
+                }
+                ,
+                {
+                    title: "提案号",
+                    field: 'id',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '提案类别',
+                    field: 'class',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '案由',
+                    field: 'resouce',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '提案者',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '办理单位',
+                    field: 'part',
+                    align: 'center'
+                },
+                {
+                    title: '签收期限',
+                    field: 'date01',
+                    align: 'center'
+                },
+                {
+                    title: '签收状态',
+                    field: 'getType',
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var cellval=$("#station").val();
+                        if (cellval =='未签收'){
+                            return '<div  style="color:red">'+cellval+'</div>';
+                        } else  if (cellval =='已签收'){
+                            return '<div  style="color:green">'+cellval+'</div>';
+                        }else {
+                            return cellval;
+                        }}
+                },
+                {
+                    title: '办理期限',
+                    field: 'date02',
+                    align: 'center'
+                },
+                {
+                    title: '办理情况',
+                    field: 'overType',
+                    align: 'center'
+                },
+                {
+                    title: '提案状态',
+                    field: 'type',
+                    align: 'center'
+                },
+
+                {
+                    title: '操作',
+                    field: 'opear',
+                    align: 'center',
+                    formatter: function (value, row) {
+                        var e = '<a  href="#" title="查看详情" onclick="handleEvent(\'' + row.id + '\')">编辑</a> ';
+
+
+                        return e ;
+                    }
+                }
+            ]
+        });
+    })
+    $(function () {
+        $('#table2').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/allFind.json",
+            dataType: "json",
+            toolbar: '#toolbar2',
+            pageList: [1,2,5,10],
+            pagination: true, //分页
+            pageSize: 9,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            strictSearch: true,
+            contentType: "application/x-www-form-urlencoded",
+            showRefresh: false,
+            queryParams: null,
+            columns: [
+                {
+                    checkbox: "true",
+                    field: 'check',
+                    align: 'center',
+                    valign: 'middle'
+                }
+                ,
+                {
+                    title: "提案号",
+                    field: 'id',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '提案类别',
+                    field: 'class',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '案由',
+                    field: 'resouce',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '提案者',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '办理单位',
+                    field: 'part',
+                    align: 'center'
+                },
+                {
+                    title: '签收期限',
+                    field: 'date01',
+                    align: 'center'
+                },
+                {
+                    title: '签收状态',
+                    field: 'getType',
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var cellval=$("#station").val();
+                        if (cellval =='未签收'){
+                            return '<div  style="color:red">'+cellval+'</div>';
+                        } else  if (cellval =='已签收'){
+                            return '<div  style="color:green">'+cellval+'</div>';
+                        }else {
+                            return cellval;
+                        }}
+                },
+                {
+                    title: '办理期限',
+                    field: 'date02',
+                    align: 'center'
+                },
+                {
+                    title: '办理情况',
+                    field: 'overType',
+                    align: 'center'
+                },
+                {
+                    title: '提案状态',
+                    field: 'type',
+                    align: 'center'
+                },
+
+                {
+                    title: '操作',
+                    field: 'opear',
+                    align: 'center',
+                    formatter: function (value, row) {
+                        var e = '<a  href="#" title="查看详情" onclick="handleEvent(\'' + row.id + '\')">编辑</a> ';
+
+
+                        return e ;
+                    }
+                }
+            ]
+        });
+    })
+
+</script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script>
+    function openlayer(id){
+        layer.open({
+            type: 2,
+            title: '添加信息',
+            shadeClose: true,
+            shade: 0.5,
+            skin: 'layui-layer-rim',
+//            maxmin: true,
+            closeBtn:1,
+            area: ['98%', '92%'],
+            shadeClose: true,
+            closeBtn: 1,
+            content: 'lay01.html'
+            //iframe的url
+        });
+    }
+</script>
+<script>
+    $(function () {
+        $(".find_span").click(function () {
+            $("#open").show();
+            $(this).hide();
+            $(".find_span1").show();
+            $("#but_close02").hide();
+            $("#but_open").hide();
+
+        })
+        $(".find_span1").click(function () {
+            $("#open").hide();
+            $(this).hide();
+            $(".find_span").show();
+            $("#but_open").show();
+            $("#but_close02").show();
+
+        })
+
+    })
+</script>
+</body>
+</html>
