@@ -1,8 +1,13 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Knowledgebase {
+@Entity
+@Table(name = "knowledgebase")
+public class Knowledgebase implements Serializable {
+    @Id
     private String kbCode;
 
     private String kbName;
@@ -13,7 +18,9 @@ public class Knowledgebase {
 
     private String kbStatus;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
+    private User user;
 
     public String getKbCode() {
         return kbCode;
@@ -55,11 +62,43 @@ public class Knowledgebase {
         this.kbStatus = kbStatus == null ? null : kbStatus.trim();
     }
 
-    public String getUserCode() {
-        return userCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Knowledgebase{" +
+                "kbCode='" + kbCode + '\'' +
+                ", kbName='" + kbName + '\'' +
+                ", kbPath='" + kbPath + '\'' +
+                ", kbDate=" + kbDate +
+                ", kbStatus='" + kbStatus + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
+    public Knowledgebase(String kbCode, String kbName, String kbPath, Date kbDate, String kbStatus, User user) {
+        this.kbCode = kbCode;
+        this.kbName = kbName;
+        this.kbPath = kbPath;
+        this.kbDate = kbDate;
+        this.kbStatus = kbStatus;
+        this.user = user;
+    }
+
+    public Knowledgebase(String kbName, String kbPath, Date kbDate, String kbStatus, User user) {
+        this.kbName = kbName;
+        this.kbPath = kbPath;
+        this.kbDate = kbDate;
+        this.kbStatus = kbStatus;
+        this.user = user;
+    }
+
+    public Knowledgebase() {
     }
 }

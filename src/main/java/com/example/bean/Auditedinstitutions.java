@@ -1,13 +1,15 @@
 package com.example.bean;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "auditedinstitutions")
 public class Auditedinstitutions implements Serializable {
+    @Id
     private String aiCode;
 
     private String aiName;
@@ -17,8 +19,20 @@ public class Auditedinstitutions implements Serializable {
     private Date aiDate;
 
     private String aiParentCode;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Auditingbody.class)
+    @JoinColumn(name = "abCode",referencedColumnName = "abCode")
+    private Auditingbody auditingbody;
 
-    private String abCode;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =Aibusiness.class,mappedBy = "auditedinstitutions")
+    private List<Aibusiness> aibusinesses=new ArrayList<>();
+
+    public List<Aibusiness> getAibusinesses() {
+        return aibusinesses;
+    }
+
+    public void setAibusinesses(List<Aibusiness> aibusinesses) {
+        this.aibusinesses = aibusinesses;
+    }
 
     public String getAiCode() {
         return aiCode;
@@ -60,11 +74,41 @@ public class Auditedinstitutions implements Serializable {
         this.aiParentCode = aiParentCode == null ? null : aiParentCode.trim();
     }
 
-    public String getAbCode() {
-        return abCode;
+    public Auditingbody getAuditingbody() {
+        return auditingbody;
+    }
+    public void setAuditingbody(Auditingbody auditingbody) {
+        this.auditingbody = auditingbody;
+    }
+    public Auditedinstitutions(String aiCode, String aiName, Date aiCreateDate, Date aiDate, String aiParentCode, Auditingbody auditingbody) {
+        this.aiCode = aiCode;
+        this.aiName = aiName;
+        this.aiCreateDate = aiCreateDate;
+        this.aiDate = aiDate;
+        this.aiParentCode = aiParentCode;
+        this.auditingbody = auditingbody;
     }
 
-    public void setAbCode(String abCode) {
-        this.abCode = abCode == null ? null : abCode.trim();
+    public Auditedinstitutions(String aiName, Date aiCreateDate, Date aiDate, String aiParentCode, Auditingbody auditingbody) {
+        this.aiName = aiName;
+        this.aiCreateDate = aiCreateDate;
+        this.aiDate = aiDate;
+        this.aiParentCode = aiParentCode;
+        this.auditingbody = auditingbody;
+    }
+
+    @Override
+    public String toString() {
+        return "Auditedinstitutions{" +
+                "aiCode='" + aiCode + '\'' +
+                ", aiName='" + aiName + '\'' +
+                ", aiCreateDate=" + aiCreateDate +
+                ", aiDate=" + aiDate +
+                ", aiParentCode='" + aiParentCode + '\'' +
+                ", auditingbody=" + auditingbody +
+                '}';
+    }
+
+    public Auditedinstitutions() {
     }
 }
