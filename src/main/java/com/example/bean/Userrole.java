@@ -1,11 +1,21 @@
 package com.example.bean;
 
-public class Userrole {
+import javax.persistence.*;
+import java.io.Serializable;
+@Table(name ="userrole")
+@Entity
+public class Userrole implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer urId;
 
-    private String userCode;
+    @OneToOne(cascade =CascadeType.ALL) //级联操作
+    @JoinColumn(name = "userCode",referencedColumnName ="userCode")
+    private User user;
 
-    private Integer roleId;
+    @OneToOne(cascade = CascadeType.ALL) //级联操作
+    @JoinColumn(name = "roleId",referencedColumnName = "roleId")
+    private Role role;
 
     public Integer getUrId() {
         return urId;
@@ -15,19 +25,35 @@ public class Userrole {
         this.urId = urId;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
+
+    public Userrole(Integer urId,User user, Role role) {
+        this.urId=urId;
+        this.user = user;
+        this.role = role;
+    }
+
+    public Userrole(User user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
+
+    public Userrole() {
+
+    }
+
 }

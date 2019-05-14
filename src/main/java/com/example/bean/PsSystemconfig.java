@@ -1,6 +1,12 @@
 package com.example.bean;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "ps_systemconfig")
 public class PsSystemconfig {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer psId;
 
     private String configcode;
