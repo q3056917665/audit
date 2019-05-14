@@ -1,11 +1,19 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Operationlog {
+@Entity
+@Table(name = "operationlog")
+public class Operationlog implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer olCode;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
+    private User user;
 
     private Date olDate;
 
@@ -25,12 +33,12 @@ public class Operationlog {
         this.olCode = olCode;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getOlDate() {
@@ -71,5 +79,40 @@ public class Operationlog {
 
     public void setOlContext(String olContext) {
         this.olContext = olContext == null ? null : olContext.trim();
+    }
+
+    public Operationlog(Integer olCode,User user, Date olDate, String olCompany, String olModule, String olType, String olContext) {
+        this.olCode=olCode;
+        this.user = user;
+        this.olDate = olDate;
+        this.olCompany = olCompany;
+        this.olModule = olModule;
+        this.olType = olType;
+        this.olContext = olContext;
+    }
+
+    public Operationlog(User user, Date olDate, String olCompany, String olModule, String olType, String olContext) {
+        this.user = user;
+        this.olDate = olDate;
+        this.olCompany = olCompany;
+        this.olModule = olModule;
+        this.olType = olType;
+        this.olContext = olContext;
+    }
+
+    public Operationlog() {
+    }
+
+    @Override
+    public String toString() {
+        return "Operationlog{" +
+                "olCode=" + olCode +
+                ", user=" + user +
+                ", olDate=" + olDate +
+                ", olCompany='" + olCompany + '\'' +
+                ", olModule='" + olModule + '\'' +
+                ", olType='" + olType + '\'' +
+                ", olContext='" + olContext + '\'' +
+                '}';
     }
 }

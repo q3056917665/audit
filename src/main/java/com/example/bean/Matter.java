@@ -1,8 +1,14 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Matter {
+@Table(name = "matter")
+@Entity
+public class Matter implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer matterId;
 
     private String matterName;
@@ -13,9 +19,13 @@ public class Matter {
 
     private Date sendDate;
 
-    private String sendCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "sendCode",referencedColumnName = "userCode")
+    private User sendCode;
 
-    private String handleCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "handleCode",referencedColumnName = "userCode")
+    private User handleCode;
 
     private Integer isAgree;
 
@@ -61,20 +71,20 @@ public class Matter {
         this.sendDate = sendDate;
     }
 
-    public String getSendCode() {
+    public User getSendCode() {
         return sendCode;
     }
 
-    public void setSendCode(String sendCode) {
-        this.sendCode = sendCode == null ? null : sendCode.trim();
+    public void setSendCode(User sendCode) {
+        this.sendCode = sendCode;
     }
 
-    public String getHandleCode() {
+    public User getHandleCode() {
         return handleCode;
     }
 
-    public void setHandleCode(String handleCode) {
-        this.handleCode = handleCode == null ? null : handleCode.trim();
+    public void setHandleCode(User handleCode) {
+        this.handleCode = handleCode;
     }
 
     public Integer getIsAgree() {
@@ -91,5 +101,46 @@ public class Matter {
 
     public void setHandleOpinion(String handleOpinion) {
         this.handleOpinion = handleOpinion == null ? null : handleOpinion.trim();
+    }
+
+    public Matter(Integer matterId,String matterName, String matterType, Integer typeId, Date sendDate, User sendCode, User handleCode, Integer isAgree, String handleOpinion) {
+        this.matterId=matterId;
+        this.matterName = matterName;
+        this.matterType = matterType;
+        this.typeId = typeId;
+        this.sendDate = sendDate;
+        this.sendCode = sendCode;
+        this.handleCode = handleCode;
+        this.isAgree = isAgree;
+        this.handleOpinion = handleOpinion;
+    }
+
+    public Matter(String matterName, String matterType, Integer typeId, Date sendDate, User sendCode, User handleCode, Integer isAgree, String handleOpinion) {
+        this.matterName = matterName;
+        this.matterType = matterType;
+        this.typeId = typeId;
+        this.sendDate = sendDate;
+        this.sendCode = sendCode;
+        this.handleCode = handleCode;
+        this.isAgree = isAgree;
+        this.handleOpinion = handleOpinion;
+    }
+
+    public Matter() {
+    }
+
+    @Override
+    public String toString() {
+        return "Matter{" +
+                "matterId=" + matterId +
+                ", matterName='" + matterName + '\'' +
+                ", matterType='" + matterType + '\'' +
+                ", typeId=" + typeId +
+                ", sendDate=" + sendDate +
+                ", sendCode=" + sendCode +
+                ", handleCode=" + handleCode +
+                ", isAgree=" + isAgree +
+                ", handleOpinion='" + handleOpinion + '\'' +
+                '}';
     }
 }

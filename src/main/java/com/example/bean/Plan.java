@@ -1,6 +1,13 @@
 package com.example.bean;
 
-public class Plan {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Table(name = "plan")
+@Entity
+public class Plan implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer planId;
 
     private String planName;
@@ -9,7 +16,9 @@ public class Plan {
 
     private Integer planType;
 
-    private String abCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity =Auditingbody.class)
+    @JoinColumn(name = "abCode",referencedColumnName = "abCode")
+    private Auditingbody auditingbody;
 
     private String planMouth;
 
@@ -45,19 +54,51 @@ public class Plan {
         this.planType = planType;
     }
 
-    public String getAbCode() {
-        return abCode;
-    }
-
-    public void setAbCode(String abCode) {
-        this.abCode = abCode == null ? null : abCode.trim();
-    }
-
     public String getPlanMouth() {
         return planMouth;
     }
 
     public void setPlanMouth(String planMouth) {
         this.planMouth = planMouth == null ? null : planMouth.trim();
+    }
+
+    public Auditingbody getAuditingbody() {
+        return auditingbody;
+    }
+
+    public void setAuditingbody(Auditingbody auditingbody) {
+        this.auditingbody = auditingbody;
+    }
+
+    public Plan(Integer planId,String planName, String planYear, Integer planType, Auditingbody auditingbody, String planMouth) {
+        this.planId=planId;
+        this.planName = planName;
+        this.planYear = planYear;
+        this.planType = planType;
+        this.auditingbody = auditingbody;
+        this.planMouth = planMouth;
+    }
+
+    public Plan(String planName, String planYear, Integer planType, Auditingbody auditingbody, String planMouth) {
+        this.planName = planName;
+        this.planYear = planYear;
+        this.planType = planType;
+        this.auditingbody = auditingbody;
+        this.planMouth = planMouth;
+    }
+
+    public Plan() {
+    }
+
+    @Override
+    public String toString() {
+        return "Plan{" +
+                "planId=" + planId +
+                ", planName='" + planName + '\'' +
+                ", planYear='" + planYear + '\'' +
+                ", planType=" + planType +
+                ", auditingbody=" + auditingbody +
+                ", planMouth='" + planMouth + '\'' +
+                '}';
     }
 }

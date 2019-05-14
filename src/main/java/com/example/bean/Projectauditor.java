@@ -1,11 +1,22 @@
 package com.example.bean;
 
-public class Projectauditor {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "projectauditor")
+public class Projectauditor implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paId;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity =User.class)
+    @JoinColumn(name = "userCode",referencedColumnName ="userCode")
+    private User user;
 
-    private Integer proId;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Project.class)
+    @JoinColumn(name = "proId",referencedColumnName = "proId")
+    private Project project;
 
     private Integer paIdentity;
 
@@ -17,20 +28,20 @@ public class Projectauditor {
         this.paId = paId;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Integer getProId() {
-        return proId;
+    public Project getProject() {
+        return project;
     }
 
-    public void setProId(Integer proId) {
-        this.proId = proId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public Integer getPaIdentity() {
@@ -39,5 +50,21 @@ public class Projectauditor {
 
     public void setPaIdentity(Integer paIdentity) {
         this.paIdentity = paIdentity;
+    }
+
+    public Projectauditor(Integer paId,User user, Project project, Integer paIdentity) {
+        this.paId=paId;
+        this.user = user;
+        this.project = project;
+        this.paIdentity = paIdentity;
+    }
+
+    public Projectauditor(User user, Project project, Integer paIdentity) {
+        this.user = user;
+        this.project = project;
+        this.paIdentity = paIdentity;
+    }
+
+    public Projectauditor() {
     }
 }

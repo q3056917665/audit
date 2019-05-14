@@ -8,8 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "role_rbac")
 public class RoleRbac implements Serializable{
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer rrId;
@@ -21,7 +19,7 @@ public class RoleRbac implements Serializable{
     )
     private List<Role> role=new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL) //级联操作
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = Module.class) //级联操作
     @JoinColumn(name = "moduleId",referencedColumnName = "moduleId")
     private Module module;
 
@@ -62,5 +60,14 @@ public class RoleRbac implements Serializable{
     }
 
     public RoleRbac() {
+    }
+
+    @Override
+    public String toString() {
+        return "RoleRbac{" +
+                "rrId=" + rrId +
+                ", role=" + role +
+                ", module=" + module +
+                '}';
     }
 }

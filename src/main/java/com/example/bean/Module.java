@@ -1,6 +1,13 @@
 package com.example.bean;
 
-public class Module {
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "module")
+public class Module implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer moduleId;
 
     private String moduleName;
@@ -59,5 +66,25 @@ public class Module {
 
     public void setModuleIsmenu(Integer moduleIsmenu) {
         this.moduleIsmenu = moduleIsmenu;
+    }
+
+    public Module(Integer moduleId,String moduleName, String modulePath, Integer parentId, String moduleIcon, Integer moduleIsmenu) {
+        this.moduleId=moduleId;
+        this.moduleName = moduleName;
+        this.modulePath = modulePath;
+        this.parentId = parentId;
+        this.moduleIcon = moduleIcon;
+        this.moduleIsmenu = moduleIsmenu;
+    }
+
+    public Module(String moduleName, String modulePath, Integer parentId, String moduleIcon, Integer moduleIsmenu) {
+        this.moduleName = moduleName;
+        this.modulePath = modulePath;
+        this.parentId = parentId;
+        this.moduleIcon = moduleIcon;
+        this.moduleIsmenu = moduleIsmenu;
+    }
+
+    public Module() {
     }
 }

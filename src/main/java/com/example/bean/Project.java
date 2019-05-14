@@ -1,8 +1,14 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Project {
+@Entity
+@Table(name = "project")
+public class Project implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer proId;
 
     private String proName;
@@ -21,9 +27,13 @@ public class Project {
 
     private Integer proStage;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
+    private User user;
 
-    private Integer planId;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Plan.class)
+    @JoinColumn(name = "planId",referencedColumnName = "planId")
+    private Plan plan;
 
     public Integer getProId() {
         return proId;
@@ -97,19 +107,50 @@ public class Project {
         this.proStage = proStage;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public Project(Integer proId,String proName, Integer proType, String aiCode, Date aiStartDate, Date aiEndDate, Date implementStratDate, Date implementEndDate, Integer proStage, User user, Plan plan) {
+        this.proId=proId;
+        this.proName = proName;
+        this.proType = proType;
+        this.aiCode = aiCode;
+        this.aiStartDate = aiStartDate;
+        this.aiEndDate = aiEndDate;
+        this.implementStratDate = implementStratDate;
+        this.implementEndDate = implementEndDate;
+        this.proStage = proStage;
+        this.user = user;
+        this.plan = plan;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public Project(String proName, Integer proType, String aiCode, Date aiStartDate, Date aiEndDate, Date implementStratDate, Date implementEndDate, Integer proStage, User user, Plan plan) {
+        this.proName = proName;
+        this.proType = proType;
+        this.aiCode = aiCode;
+        this.aiStartDate = aiStartDate;
+        this.aiEndDate = aiEndDate;
+        this.implementStratDate = implementStratDate;
+        this.implementEndDate = implementEndDate;
+        this.proStage = proStage;
+        this.user = user;
+        this.plan = plan;
     }
 
-    public Integer getPlanId() {
-        return planId;
+    public Project() {
     }
 
-    public void setPlanId(Integer planId) {
-        this.planId = planId;
+    @Override
+    public String toString() {
+        return "Project{" +
+                "proId=" + proId +
+                ", proName='" + proName + '\'' +
+                ", proType=" + proType +
+                ", aiCode='" + aiCode + '\'' +
+                ", aiStartDate=" + aiStartDate +
+                ", aiEndDate=" + aiEndDate +
+                ", implementStratDate=" + implementStratDate +
+                ", implementEndDate=" + implementEndDate +
+                ", proStage=" + proStage +
+                ", user=" + user +
+                ", plan=" + plan +
+                '}';
     }
 }

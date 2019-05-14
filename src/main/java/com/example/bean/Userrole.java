@@ -9,11 +9,11 @@ public class Userrole implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer urId;
 
-    @OneToOne(cascade =CascadeType.ALL) //级联操作
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class) //级联操作
     @JoinColumn(name = "userCode",referencedColumnName ="userCode")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL) //级联操作
+    @OneToOne(fetch = FetchType.LAZY,targetEntity =Role.class) //级联操作
     @JoinColumn(name = "roleId",referencedColumnName = "roleId")
     private Role role;
 
@@ -53,7 +53,14 @@ public class Userrole implements Serializable {
     }
 
     public Userrole() {
-
     }
 
+    @Override
+    public String toString() {
+        return "Userrole{" +
+                "urId=" + urId +
+                ", user=" + user +
+                ", role=" + role +
+                '}';
+    }
 }

@@ -1,8 +1,14 @@
 package com.example.bean;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class News {
+@Table(name = "news")
+@Entity
+public class News implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer newsId;
 
     private String newsName;
@@ -11,9 +17,13 @@ public class News {
 
     private Integer typeId;
 
-    private String senderCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "senderCode",referencedColumnName = "userCode")
+    private User senderCode;
 
-    private String userCode;
+    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
+    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
+    private User userCode;
 
     private Date sendDate;
 
@@ -51,20 +61,20 @@ public class News {
         this.typeId = typeId;
     }
 
-    public String getSenderCode() {
+    public User getSenderCode() {
         return senderCode;
     }
 
-    public void setSenderCode(String senderCode) {
-        this.senderCode = senderCode == null ? null : senderCode.trim();
+    public void setSenderCode(User senderCode) {
+        this.senderCode = senderCode;
     }
 
-    public String getUserCode() {
+    public User getUserCode() {
         return userCode;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode == null ? null : userCode.trim();
+    public void setUserCode(User userCode) {
+        this.userCode = userCode;
     }
 
     public Date getSendDate() {
@@ -81,5 +91,43 @@ public class News {
 
     public void setIsRead(Integer isRead) {
         this.isRead = isRead;
+    }
+
+    public News(Integer newsId,String newsName, String newsContent, Integer typeId, User senderCode, User userCode, Date sendDate, Integer isRead) {
+        this.newsId=newsId;
+        this.newsName = newsName;
+        this.newsContent = newsContent;
+        this.typeId = typeId;
+        this.senderCode = senderCode;
+        this.userCode = userCode;
+        this.sendDate = sendDate;
+        this.isRead = isRead;
+    }
+
+    public News(String newsName, String newsContent, Integer typeId, User senderCode, User userCode, Date sendDate, Integer isRead) {
+        this.newsName = newsName;
+        this.newsContent = newsContent;
+        this.typeId = typeId;
+        this.senderCode = senderCode;
+        this.userCode = userCode;
+        this.sendDate = sendDate;
+        this.isRead = isRead;
+    }
+
+    public News() {
+    }
+
+    @Override
+    public String toString() {
+        return "News{" +
+                "newsId=" + newsId +
+                ", newsName='" + newsName + '\'' +
+                ", newsContent='" + newsContent + '\'' +
+                ", typeId=" + typeId +
+                ", senderCode=" + senderCode +
+                ", userCode=" + userCode +
+                ", sendDate=" + sendDate +
+                ", isRead=" + isRead +
+                '}';
     }
 }
