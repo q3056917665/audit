@@ -1,35 +1,74 @@
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
-    <title>项目进度</title>
+    <title>操作日志</title>
 
     <link href="css/all.css" rel="stylesheet" type="text/css">
     <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
-
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-                </button>
-                <button id="btn_edit" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-                </button>
-                <button id="btn_delete" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-                </button>
-            </div>
-        </h3>
+
+    <div align="right" style="padding-right: 20px">
+        <input id="search" type="text"style="width: 200px;height: 35px" placeholder="请输入关键字">
+        <button class="btn btn-info"> <i class="fa fa-search"></i></button>
+        <button class="btn btn-info" id="search-plus"> <i class="fa fa-search-plus"></i>高级查询</button>
+
+    </div>
+    <div id="b" style="border:  1px solid black;width:450px;float: right;position: absolute;right: 0;z-index: 100;background: white;display: none">
+        <div>
+            <form class="form-horizontal" id="myform" role="form">
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-3 control-label">用户名:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="userCode" class="form-control" id="userCode" placeholder="请输入名字">
+                    </div>
+                </div>
+                <!--<div class="form-group">
+                    <label  class="col-sm-3 control-label">用户所在机构:</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" >
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+                </div>-->
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label">操作日期:</label>
+                    <div class="col-sm-8">
+                        <input type="date" name="startTime" id="startTime" class="form-control" style="width: 140px;display: inline-block">
+                        -<input type="date" name="endTime" id="endTime" class="form-control" style="width: 140px;display: inline-block" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">模块:</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="model" id="model" class="form-control"  placeholder="请输入名字">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">操作内容:</label>
+                    <div class="col-sm-8">
+                        <textarea type="text" id="context" name="context" class="form-control" ></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <a id="plus" onclick="SearchPlus()" class="btn btn-default">查询</a>
+                        <button id="reset"  type="reset" class="btn btn-default">重置</button>
+                        <button id="qx" type="button" class="btn btn-default" >取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="panel-body">
-        <table data-url="json/data_alae_list.json" id="table" class="table_style" style="margin: 0 auto" >
-        </table>
+        <table data-url="json/data_alae_list.json" id="table" class="table_style" style="margin: 0 auto" ></table>
     </div>
 </div>
 
@@ -39,105 +78,122 @@
 <script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="js/date/js/laydate.js"></script>
 
-
 <script type="text/javascript">
+
+
+   function SearchPlus(){
+       var context=$("#context").val();
+       var startTime=$("#startTime").val();
+       var endTime=$("#endTime").val();
+       var userCode=$("#userCode").val();
+       var model=$("#model").val();
+       $.ajax({
+           type: "post",
+           contentType: "application/x-www-form-urlencoded",
+           url: "searchPlusLog",
+           data: {context : context,startTime:startTime,endTime:endTime,userCode:userCode,model:model},
+           dataType:"json",
+           success : function(json) {
+               $("#table").bootstrapTable('load', json);//主要是要这种写法
+               $("#reset").trigger("click");
+               $('#b').toggle();
+           }
+       });
+   }
+
     $(function () {
+        $('#search-plus,#qx').click(function () {
+            $('#b').toggle();
+        });
+
+        $("#search").keydown(function() {
+            if (event.keyCode == "13") {//keyCode=13是回车键
+                var gj=$("#search").val();
+                if(!$.isEmptyObject(gj)){
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/x-www-form-urlencoded",
+                        url: "searchLog",
+                        data: {context : gj},
+                        dataType:"json",
+                        success : function(json) {
+                            $("#table").bootstrapTable('load', json);//主要是要这种写法
+                        }
+                    });
+                }else {
+                    $.ajax({
+                        type: "post",
+                        contentType: "application/x-www-form-urlencoded",
+                        url: "Operation",
+                        dataType:"json",
+                        success : function(json) {
+                            $("#table").bootstrapTable('load', json);//主要是要这种写法
+                        }
+                    });
+                }
+
+            }
+        });
+
         $('#table').bootstrapTable({
             method: "get",
             striped: true,
             singleSelect: false,
-            url: "json/allFind.json",
+            url: "Operation",
             dataType: "json",
             pageList: [1,2,5,10],
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 3,
             pageNumber: 1,
             search: false, //显示搜索框
+            queryParamsType : "undefined",
+            queryParams: function queryParams(params) {   //设置查询参数，都是可以自动从控件获得
+                var param = {
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    search : params.searchText,
+                    sortName : params.sortName,
+                    sortOrder : params.sortOrder,
+                };
+                return param;
+            },
             strictSearch: true,
             contentType: "application/x-www-form-urlencoded",
             showRefresh: false,
             queryParams: null,
             columns: [
                 {
-                    checkbox: "true",
-                    field: 'check',
-                    align: 'center',
-                    valign: 'middle'
-                }
-                ,
-                {
-                    title: "提案号",
-                    field: 'id',
+                    title: "操作人",
+                    field: 'userCode',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '提案类别',
-                    field: 'class',
+                    title: '操作时间',
+                    field: 'olDate',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '案由',
-                    field: 'resouce',
+                    title: '操作单位',
+                    field: 'olCompany',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '提案者',
-                    field: 'person',
+                    title: '模块',
+                    field: 'olModule',
                     align: 'center'
                 },
                 {
-                    title: '办理单位',
-                    field: 'part',
+                    title: '操作类型',
+                    field: 'olType',
                     align: 'center'
                 },
                 {
-                    title: '签收期限',
-                    field: 'date01',
+                    title: '操作内容',
+                    field: 'olContext',
                     align: 'center'
-                },
-                {
-                    title: '签收状态',
-                    field: 'getType',
-                    align: 'center',
-                    formatter: function (cellval, row) {
-                        //var cellval=$("#station").val();
-                        if (cellval =='未签收'){
-                            return '<div  style="color:red">'+cellval+'</div>';
-                        } else  if (cellval =='已签收'){
-                            return '<div  style="color:green">'+cellval+'</div>';
-                        }else {
-                            return cellval;
-                        }}
-                },
-                {
-                    title: '办理期限',
-                    field: 'date02',
-                    align: 'center'
-                },
-                {
-                    title: '办理情况',
-                    field: 'overType',
-                    align: 'center'
-                },
-                {
-                    title: '提案状态',
-                    field: 'type',
-                    align: 'center'
-                },
-
-                {
-                    title: '操作',
-                    field: 'opear',
-                    align: 'center',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="查看详情" onclick="handleEvent(\'' + row.id + '\')">编辑</a> ';
-
-
-                        return e ;
-                    }
                 }
             ]
         });

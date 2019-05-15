@@ -1,6 +1,10 @@
 package com.example.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,10 +15,19 @@ public class Operationlog implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer olCode;
 
-    @OneToOne(fetch = FetchType.LAZY,targetEntity = User.class)
-    @JoinColumn(name = "userCode",referencedColumnName = "userCode")
-    private User user;
 
+    private String userCode;
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")  //入参
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")   //出参
     private Date olDate;
 
     private String olCompany;
@@ -33,13 +46,6 @@ public class Operationlog implements Serializable {
         this.olCode = olCode;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public Date getOlDate() {
         return olDate;
@@ -81,9 +87,8 @@ public class Operationlog implements Serializable {
         this.olContext = olContext == null ? null : olContext.trim();
     }
 
-    public Operationlog(Integer olCode,User user, Date olDate, String olCompany, String olModule, String olType, String olContext) {
+    public Operationlog(Integer olCode, Date olDate, String olCompany, String olModule, String olType, String olContext) {
         this.olCode=olCode;
-        this.user = user;
         this.olDate = olDate;
         this.olCompany = olCompany;
         this.olModule = olModule;
@@ -91,8 +96,7 @@ public class Operationlog implements Serializable {
         this.olContext = olContext;
     }
 
-    public Operationlog(User user, Date olDate, String olCompany, String olModule, String olType, String olContext) {
-        this.user = user;
+    public Operationlog( Date olDate, String olCompany, String olModule, String olType, String olContext) {
         this.olDate = olDate;
         this.olCompany = olCompany;
         this.olModule = olModule;
@@ -107,7 +111,6 @@ public class Operationlog implements Serializable {
     public String toString() {
         return "Operationlog{" +
                 "olCode=" + olCode +
-                ", user=" + user +
                 ", olDate=" + olDate +
                 ", olCompany='" + olCompany + '\'' +
                 ", olModule='" + olModule + '\'' +
