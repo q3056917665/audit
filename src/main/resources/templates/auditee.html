@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="css/all.css" rel="stylesheet" type="text/css">
-    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="jquery-easyui-1.7.0/demo/demo.css">
-    <script type="text/javascript" src="jquery-easyui-1.7.0/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery-easyui-1.7.0/jquery.easyui.min.js"></script>
+    <title>被审单位管理</title>
+    <link th:href="@{/css/all.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/js/bstable/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/js/bstable/css/bootstrap-table.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/themes/icon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/jquery-easyui-1.7.0/demo/demo.css}">
+    <script th:src="@{/js/jquery-1.8.3.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui-1.7.0/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-easyui-1.7.0/jquery.easyui.min.js}"></script>
     <style>
         *{margin: 0;padding: 0;}
         #left{
@@ -35,6 +37,10 @@
             height: 52%;
             border: 1px solid lightgray;
         }
+
+        a:hover{
+            text-decoration: none;
+        }
     </style>
 </head>
 <body style="height: 936px;margin-top: -18px;">
@@ -47,60 +53,39 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal" role="form">
-                <label for="type" class="control-label" style="display: inline-block;">业务类型:</label>
-                <select class="form-control" style="width: 250px;display: inline-block;margin-left: 60px;" id="type">
-                    <option>123</option>
-                    <option>123</option>
-                    <option>123</option>
+                <label for="type" class="control-label" style="display: inline-block;margin-left: 30px;">业务类型:</label>
+                <select class="form-control" style="width: 250px;display: inline-block;margin-left:40px;" id="type">
+                    <option th:value="0" selected="selected" th:text="--全部--"></option>
+                    <span th:each="type:${aibusinessAll}">
+                          <option th:value="${type.psSystemconfig.psId}" th:text="${type.psSystemconfig.configvaluename}"></option>
+                    </span>
                 </select>
             </form>
         </div>
     </div>
     <div id="toolbar1" class="btn-group">
-        <button id="btn_add1" type="button" class="btn btn-default">
+        <button id="btn_add1" type="button" class="btn btn-default" th:onclick="addAuditBody()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
         </button>
-        <button id="btn_edit1" type="button" class="btn btn-default">
+        <button id="btn_edit1" type="button" class="btn btn-default" th:onclick="editAuditBody()">
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
         </button>
-        <button id="btn_delete1" type="button" class="btn btn-default">
+        <button id="btn_delete1" type="button" class="btn btn-default" th:onclick="removeAuditBody()">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
     </div>
     <div class="easyui-panel" style="padding:5px">
-        <ul class="easyui-tree">
-            <li>
-                <span>My Documents</span>
-                <ul>
-                    <li data-options="state:'closed'">
-                        <span>Photos</span>
-                        <ul>
-                            <li>
-                                <span>Friend</span>
-                            </li>
-                            <li>
-                                <span>Wife</span>
-                            </li>
-                            <li>
-                                <span>Company</span>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <span>Program Files</span>
-                        <ul>
-                            <li>Intel</li>
-                            <li>Java</li>
-                            <li>Microsoft Office</li>
-                            <li>Games</li>
-                        </ul>
-                    </li>
-                    <li>index.html</li>
-                    <li>about.html</li>
-                    <li>welcome.html</li>
-                </ul>
-            </li>
-        </ul>
+        <div>
+            <h2>直属部门:</h2>
+            <ul th:each="audtiOne:${all}" style="display: inline-block;margin-left:40px;list-style: none">
+                <li><i class="fa fa-folder" style="color: orange"></i>&nbsp;<a href="javascript:void(0)" th:onclick="loadErAudit([[${audtiOne.abCode}]]);" th:text="${audtiOne.abName}"></a></li>
+            </ul>
+        </div>
+        <div th:fragment="chengshi" id="chengshi" style="margin-left: 70px;">
+            <ul th:each="auditTwo:${allByParentCode}" style="list-style: none">
+                <li><i class="fa fa-file" style="color:rgb(188,188,233)">&nbsp;&nbsp;<a href="" th:text="${auditTwo.abName}"></a></i></li>
+            </ul>
+        </div>
     </div>
 </div>
 <div id="main">
@@ -128,13 +113,10 @@
         </p>
     </div>
 </div>
-
-
-<script src="js/jquery/jQuery-2.2.0.min.js"></script>
-<script src="js/bstable/js/bootstrap.min.js"></script>
-<script src="js/bstable/js/bootstrap-table.js"></script>
-<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="js/date/js/laydate.js"></script>
+<script th:src="@{/js/bstable/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/bstable/js/bootstrap-table.js}"></script>
+<script th:src="@{/js/bstable/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/js/date/js/laydate.js}"></script>
 <script>
     !function(){
         laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
@@ -144,6 +126,10 @@
 </script>
 
 <script type="text/javascript">
+    function loadErAudit(parentCode){
+        $('#chengshi').load("auditByEr?parentCode="+parentCode);
+    }
+
     $(function () {
         $('#table1').bootstrapTable({
             method: "get",
@@ -350,7 +336,7 @@
     })
 
 </script>
-<script src="js/layer_v2.1/layer/layer.js"></script>
+<script th:src="@{/js/layer_v2.1/layer/layer.js}"></script>
 <script>
     function openlayer(id){
         layer.open({
