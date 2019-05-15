@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface Auditingbodydao extends
         JpaRepository<Auditingbody,String> {
-    List<Auditingbody> findByParentCode(String parentCode);
 }

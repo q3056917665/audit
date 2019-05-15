@@ -37,6 +37,10 @@
             height: 52%;
             border: 1px solid lightgray;
         }
+
+        a:hover{
+            text-decoration: none;
+        }
     </style>
 </head>
 <body style="height: 936px;margin-top: -18px;">
@@ -49,30 +53,39 @@
         </div>
         <div class="panel-body">
             <form class="form-horizontal" role="form">
-                <label for="type" class="control-label" style="display: inline-block;">业务类型:</label>
-                <select class="form-control" style="width: 250px;display: inline-block;margin-left: 60px;" id="type">
-                    <option>123</option>
-                    <option>123</option>
-                    <option>123</option>
+                <label for="type" class="control-label" style="display: inline-block;margin-left: 30px;">业务类型:</label>
+                <select class="form-control" style="width: 250px;display: inline-block;margin-left:40px;" id="type">
+                    <option th:value="0" selected="selected" th:text="--全部--"></option>
+                    <span th:each="type:${aibusinessAll}">
+                          <option th:value="${type.psSystemconfig.psId}" th:text="${type.psSystemconfig.configvaluename}"></option>
+                    </span>
                 </select>
             </form>
         </div>
     </div>
     <div id="toolbar1" class="btn-group">
-        <button id="btn_add1" type="button" class="btn btn-default">
+        <button id="btn_add1" type="button" class="btn btn-default" th:onclick="addAuditBody()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
         </button>
-        <button id="btn_edit1" type="button" class="btn btn-default">
+        <button id="btn_edit1" type="button" class="btn btn-default" th:onclick="editAuditBody()">
             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
         </button>
-        <button id="btn_delete1" type="button" class="btn btn-default">
+        <button id="btn_delete1" type="button" class="btn btn-default" th:onclick="removeAuditBody()">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
     </div>
     <div class="easyui-panel" style="padding:5px">
-       <ul th:each="audtiOne:${all}">
-           <li><i class="fa fa-folder" style="color: orange"></i>&nbsp;<a th:href="@{/auditeeHtml(parentCode=${audtiOne.abCode})}" th:text="${audtiOne.abName}"></a></li>
-       </ul>
+        <div>
+            <h2>直属部门:</h2>
+            <ul th:each="audtiOne:${all}" style="display: inline-block;margin-left:40px;list-style: none">
+                <li><i class="fa fa-folder" style="color: orange"></i>&nbsp;<a href="javascript:void(0)" th:onclick="loadErAudit([[${audtiOne.abCode}]]);" th:text="${audtiOne.abName}"></a></li>
+            </ul>
+        </div>
+        <div th:fragment="chengshi" id="chengshi" style="margin-left: 70px;">
+            <ul th:each="auditTwo:${allByParentCode}" style="list-style: none">
+                <li><i class="fa fa-file" style="color:rgb(188,188,233)">&nbsp;&nbsp;<a href="" th:text="${auditTwo.abName}"></a></i></li>
+            </ul>
+        </div>
     </div>
 </div>
 <div id="main">
@@ -113,6 +126,10 @@
 </script>
 
 <script type="text/javascript">
+    function loadErAudit(parentCode){
+        $('#chengshi').load("auditByEr?parentCode="+parentCode);
+    }
+
     $(function () {
         $('#table1').bootstrapTable({
             method: "get",
