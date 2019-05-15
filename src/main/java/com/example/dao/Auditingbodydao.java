@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface Auditingbodydao extends
-        JpaRepository<Auditingbody,String> {
+public interface Auditingbodydao extends JpaRepository<Auditingbody,String> {
+    public List<Auditingbody> findByParentCode(String parentCode);
 }

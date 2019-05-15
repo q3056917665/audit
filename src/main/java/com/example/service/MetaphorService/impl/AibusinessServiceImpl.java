@@ -6,7 +6,6 @@ import com.example.service.MetaphorService.AibusinessService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
 import java.util.List;
 
 @Service

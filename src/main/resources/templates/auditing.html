@@ -28,14 +28,17 @@
 <body>
     <div id="top">
         <div id="toolbar1" class="btn-group" style="margin-left:10px;">
-            <button id="btn_add" type="button" class="btn btn-default">
-                <span onclick="xz()" class="glyphicon glyphicon-plus" style="color: green" aria-hidden="true">新增</span>
+            <button onclick="xz()" id="btn_add" type="button" class="btn btn-default">
+                <span  class="glyphicon glyphicon-plus" style="color: lightgreen" aria-hidden="true"></span>新增
             </button>
             <button id="btn_edit" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil" style="color: red" aria-hidden="true"></span>修改
+                <span class="glyphicon glyphicon-pencil" style="color: lightpink" aria-hidden="true"></span>修改
             </button>
             <button id="btn_delete" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-remove" style="color: yellow" aria-hidden="true"></span>删除
+                <span class="glyphicon glyphicon-remove" style="color: lightyellow" aria-hidden="true"></span>删除
+            </button>
+            <button onclick="SearchAudited()" id="btn_search" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-search" style="color: lightblue" aria-hidden="true"></span>查询被审计的部门
             </button>
         </div>
         <table data-url="json/data_alae_list.json" id="table1" class="table_style" style="margin: 0 auto" >
@@ -52,39 +55,88 @@
     <script th:src="@{/js/bstable/js/bootstrap-table-zh-CN.min.js}"></script>
     <script th:src="@{/js/date/js/laydate.js}"></script>
 
-
     <script type="text/javascript">
-
-        function xz(){
-            alert(111)
+        function SearchAudited(){
+            $("#table2").bootstrapTable('destroy');
             var a= $('#table1').bootstrapTable('getSelections');
             if(a.length==1){
-                b.val(a[0].id);
-
+                var abCode=a[0].abCode;
+                alert(abCode)
+                $('#table2').bootstrapTable({
+                    striped: false,
+                    clickToSelect: true,
+                    singleSelect: true,
+                    toolbar: '#toolbar2',
+                    pageList: [1, 2, 5, 10],
+                    pagination: true, //分页
+                    pageSize: 5,
+                    pageNumber: 1,
+                    search: false, //显示搜索框
+                    strictSearch: true,
+                    contentType: "application/x-www-form-urlencoded",
+                    showRefresh: false,
+                    queryParams: null,
+                    ajax:function(request){
+                        $.ajax({
+                            url: "getAdministrationByAbCode?abCode="+abCode,
+                            type:'POST',
+                            data:'data',
+                            dataType: "json",
+                            success:function(data){
+                                request.success({
+                                    row : data
+                                });
+                                $('#table2').bootstrapTable('load', data);
+                            },
+                            error:function(){
+                                console.log("查询失败，请联系管理员");
+                            }
+                        })
+                    },
+                    columns: [
+                        {
+                            title: '被审计机构名称',
+                            field: 'aiName',
+                            align: 'center',
+                            valign: 'middle'
+                        },
+                        {
+                            title: '代码',
+                            field: 'aiCode',
+                            align: 'center',
+                            valign: 'middle'
+                        }
+                    ]
+                });
             }else{
                 alert("请选中一行")
             }
-        }
-        $(function () {
 
+        }
+
+
+        $(function () {
             $('#table1').bootstrapTable({
                 method: "get",
                 striped: false,
-                singleSelect: false,
+                clickToSelect: true,
+                singleSelect: true,
                 url: "getAuditBody",
                 dataType: "json",
                 toolbar: '#toolbar1',
-                pageList: [1,2,5,10],
+                pageList: [1, 2, 5, 10],
                 pagination: true, //分页
-                pageSize:10,
+                pageSize: 10,
                 pageNumber: 1,
                 search: false, //显示搜索框
                 strictSearch: true,
                 contentType: "application/x-www-form-urlencoded",
                 showRefresh: false,
                 queryParams: null,
-                clickToSelect: true,
                 columns: [
+                    {
+                        checkbox: true
+                    },
                     {
                         title: '审计机构名称',
                         field: 'abName',
@@ -100,40 +152,6 @@
                 ]
             });
         })
-        $(function () {
-            $('#table2').bootstrapTable({
-                method: "get",
-                striped: true,
-                singleSelect: false,
-                url: "json/allFind.json",
-                dataType: "json",
-                pageList: [1,2,5,10],
-                pagination: true, //分页
-                pageSize: 5,
-                pageNumber: 1,
-                search: false, //显示搜索框
-                strictSearch: true,
-                contentType: "application/x-www-form-urlencoded",
-                showRefresh: false,
-                queryParams: null,
-                columns: [
-
-                    {
-                        title: '提案类别',
-                        field: 'class',
-                        align: 'center',
-                        valign: 'middle'
-                    },
-                    {
-                        title: '案由',
-                        field: 'resouce',
-                        align: 'center',
-                        valign: 'middle'
-                    }
-                ]
-            });
-        })
-
     </script>
     <script th:src="@{/js/layer_v2.1/layer/layer.js}"></script>
     <script>
@@ -154,27 +172,5 @@
             });
         }
     </script>
-    <script>
-        $(function () {
-            $(".find_span").click(function () {
-                $("#open").show();
-                $(this).hide();
-                $(".find_span1").show();
-                $("#but_close02").hide();
-                $("#but_open").hide();
-
-            })
-            $(".find_span1").click(function () {
-                $("#open").hide();
-                $(this).hide();
-                $(".find_span").show();
-                $("#but_open").show();
-                $("#but_close02").show();
-
-            })
-
-        })
-    </script>
-
 </body>
 </html>

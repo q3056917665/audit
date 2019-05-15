@@ -1,5 +1,7 @@
 package com.example.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "auditedinstitutions")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Auditedinstitutions implements Serializable {
     @Id
     private String aiCode;
@@ -19,6 +22,7 @@ public class Auditedinstitutions implements Serializable {
     private Date aiDate;
 
     private String aiParentCode;
+
     @ManyToOne(fetch = FetchType.LAZY,targetEntity = Auditingbody.class)
     @JoinColumn(name = "abCode",referencedColumnName = "abCode")
     private Auditingbody auditingbody;

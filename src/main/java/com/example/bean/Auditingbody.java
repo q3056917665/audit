@@ -1,11 +1,15 @@
 package com.example.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "auditingbody")
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Auditingbody implements Serializable {
     @Id
     private String abCode;
@@ -14,13 +18,13 @@ public class Auditingbody implements Serializable {
 
     private String abName;
 
-
     public Auditingbody() {
     }
 
     public String getParentCode() {
         return parentCode;
     }
+
 
     @Override
     public String toString() {
@@ -42,16 +46,16 @@ public class Auditingbody implements Serializable {
         this.abName = abName;
     }
 
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
-
     public String getAbCode() {
         return abCode;
     }
 
     public void setAbCode(String abCode) {
-        this.abCode = abCode == null ? null : abCode.trim();
+        this.abCode = abCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
     }
 
     public String getAbName() {
@@ -59,6 +63,7 @@ public class Auditingbody implements Serializable {
     }
 
     public void setAbName(String abName) {
-        this.abName = abName == null ? null : abName.trim();
+        this.abName = abName;
     }
+
 }
