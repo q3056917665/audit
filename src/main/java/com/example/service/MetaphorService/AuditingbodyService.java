@@ -11,4 +11,10 @@ public interface AuditingbodyService {
     public Auditingbody findByAbCode(String AbCode);
 
     public List<Auditingbody> findByParentCode(String parentCode);
+
+    public String addAuditBody(String abCode,String parentCode,String abName);
+
+    public boolean removeAuditBodyByAbCode(String abCode);
+
+    public boolean removeAduitBodyParentCode(String parentCode);
 }

@@ -25,12 +25,13 @@ public class AuditController {
 
     @RequestMapping("/auditeeHtml")
     public String auditeeHtml(Model model){
-
         return "auditee";
     }
 
     @RequestMapping("/auditingHtml")
     public String auditingHtml(Model model){
+        List<Auditingbody> byParentCode = auditingbodyService.findByParentCode("0");
+        model.addAttribute("byParentCode",byParentCode);
         return "auditing";
     }
 
@@ -59,9 +60,50 @@ public class AuditController {
         }
     }
 
+    /***
+     * 添加审计机构
+     * @param abCode
+     * @param parentCode
+     * @param abName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/saveAduitBody")
+    public String saveAduitBody(String abCode,String parentCode,String abName){
+        return auditingbodyService.addAuditBody(abCode, parentCode, abName);
+    }
+
+    /***
+     * 删除审计机构
+     * @param abCode
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/removeAuditBody")
+    public boolean removeAuditBody(@RequestParam(value = "abCode",required = false)String abCode){
+        //去数据库查传过来的代码是总部还是分部
+        Auditingbody byAbCode = auditingbodyService.findByAbCode(abCode);
+        //是总部
+        if(byAbCode.getParentCode().equals("0")){
+            //删除全分部
+             auditingbodyService.removeAduitBodyParentCode(abCode);
+            //删除总部
+             return  auditingbodyService.removeAuditBodyByAbCode(abCode);
+        }else{
+            return auditingbodyService.removeAuditBodyByAbCode(abCode);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/showAuditBody")
+    public Auditingbody showAuditBody(@RequestParam(value = "abCode",required = false)String abCode){
+        return auditingbodyService.findByAbCode(abCode);
+    }
+
+
     @RequestMapping("/auditByEr")
     public String auditByEr(Model model, @RequestParam(value = "parentCode",required = false)String parentCode){
-        /*List<Auditingbody> allByParentCode = auditingbodyService.findAllByParentCode(parentCode); //查询二级菜单
+        /*List<Auditingbody> allByParentCode = auditingbod/'14 yService.findAllByParentCode(parentCode); //查询二级菜单
         model.addAttribute("allByParentCode",allByParentCode);*/
         return "auditee::chengshi";
     }
